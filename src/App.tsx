@@ -4,6 +4,7 @@ import LoginPage from "@/pages/auth/LoginPage"
 import ProtectedRoute from "@/components/shared/ProtectedRoute"
 import AppShell from "@/layouts/AppShell"
 import HomePage from "@/pages/home/HomePage"
+import ShopProfilePage from "@/pages/shop/ShopProfilePage"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<AppShell />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/shop/:shopId" element={<ShopProfilePage />} />
             <Route path="/bookings" element={<div className="p-4">Bookings placeholder</div>} />
             <Route path="/queue" element={<div className="p-4">Queue placeholder</div>} />
             <Route path="/loyalty" element={<div className="p-4">Loyalty placeholder</div>} />

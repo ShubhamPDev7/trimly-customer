@@ -33,16 +33,19 @@ export interface BarberPublicProfile {
   userId: string
   name: string
   bio: string | null
-  specialties: string[]
+  specialties: string | null
   experienceYears: number | null
-  photoUrl: string | null
   instagramHandle: string | null
+  photoUrl: string | null
 }
 
 export interface CancellationPolicyResponse {
   id: string
   shopId: string
   minHoursBeforeCancel: number
+  description: string | null
+  createdAt: string
+  updatedAt: string
 }
 
 export interface ShopPublicProfileResponse {
