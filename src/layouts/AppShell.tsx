@@ -1,6 +1,7 @@
 import { Outlet, NavLink } from "react-router-dom"
 import { Home, CalendarClock, Users, Gift, User } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useFcmRegistration } from "@/hooks/useFcm"
 
 const navItems = [
   { to: "/", label: "Home", icon: Home },
@@ -11,6 +12,8 @@ const navItems = [
 ]
 
 export default function AppShell() {
+  useFcmRegistration()
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <main className="flex-1 pb-20">
