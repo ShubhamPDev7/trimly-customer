@@ -5,8 +5,8 @@ import type {
   AvailableSlotsResponse,
   PagedBookingsResponse,
   BookingStatus,
+  BillResponse,
 } from "@/types/booking"
-
 export const createBooking = async (
   shopId: string,
   data: BookingRequest
@@ -28,9 +28,13 @@ export const getAvailableSlots = async (
 }
 
 export const getMyBookings = async (
-  shopId: string,
   params: { status?: BookingStatus; page?: number; size?: number }
 ): Promise<PagedBookingsResponse> => {
-  const res = await apiClient.get<PagedBookingsResponse>(`/shops/${shopId}/bookings`, { params })
+  const res = await apiClient.get<PagedBookingsResponse>("/bookings/mine", { params })
+  return res.data
+}
+
+export const getMyBookingBill = async (bookingId: string): Promise<BillResponse> => {
+  const res = await apiClient.get<BillResponse>(`/bookings/${bookingId}/bill`)
   return res.data
 }
