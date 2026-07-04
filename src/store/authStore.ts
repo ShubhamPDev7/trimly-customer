@@ -21,6 +21,7 @@ interface AuthState {
     phone: string | null
     role: string
   }) => void
+  updateProfileFields: (fields: { name: string; email: string | null; phone: string | null }) => void
   clearAuth: () => void
 }
 
@@ -45,6 +46,12 @@ export const useAuthStore = create<AuthState>()(
           phone: data.phone,
           role: data.role as UserRole,
           isAuthenticated: true,
+        }),
+      updateProfileFields: (fields) =>
+        set({
+          name: fields.name,
+          email: fields.email,
+          phone: fields.phone,
         }),
       clearAuth: () =>
         set({

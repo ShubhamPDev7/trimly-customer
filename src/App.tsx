@@ -9,6 +9,7 @@ import ShopProfilePage from "@/pages/shop/ShopProfilePage"
 import MyBookingsPage from "@/pages/bookings/MyBookingsPage"
 import QueuePage from "@/pages/queue/QueuePage"
 import JoinQueuePage from "@/pages/queue/JoinQueuePage"
+import ProfilePage from "@/pages/profile/ProfilePage"
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
             <Route path="/bookings" element={<MyBookingsPage />} />
             <Route path="/queue" element={<QueuePage />} />
             <Route path="/loyalty" element={<div className="p-4">Loyalty placeholder</div>} />
-            <Route path="/profile" element={<div className="p-4">Profile placeholder</div>} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
           <Route path="/shop/:shopId" element={<ShopProfilePage />} />
           <Route path="/shop/:shopId/book" element={<BookingFlowPage />} />
