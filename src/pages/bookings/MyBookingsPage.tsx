@@ -1,11 +1,14 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Calendar } from "lucide-react"
+import { Calendar, Star } from "lucide-react"
 import { useMyBookings, useMyBookingBill } from "@/hooks/useBookings"
+import { useMyReviewedIds } from "@/hooks/useReviews"
 import { Receipt, ChevronDown } from "lucide-react"
 import type { BookingStatus } from "@/types/booking"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
+import LeaveReviewDialog from "@/components/shared/LeaveReviewDialog"
 import {
   Tabs,
   TabsList,
@@ -24,6 +27,8 @@ export default function MyBookingsPage() {
   const navigate = useNavigate()
   const [filter, setFilter] = useState<BookingStatus | "ALL">("ALL")
   const { data, isLoading } = useMyBookings(filter === "ALL" ? undefined : filter)
+  const { data: reviewedIds } = useMyReviewedIds()
+  const [reviewDialogBookingId, setReviewDialogBookingId] = useState<string | null>(null)
 
   return (
     <div className="space-y-4 p-4">
@@ -84,12 +89,32 @@ export default function MyBookingsPage() {
               {b.status === "COMPLETED" && (
                 <div onClick={(e) => e.stopPropagation()}>
                   <BillDetails bookingId={b.id} />
+                  {reviewedIds && !reviewedIds.bookingIds.includes(b.id) && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-2 w-full gap-1.5"
+                      onClick={() => setReviewDialogBookingId(b.id)}
+                    >
+                      <Star className="h-3.5 w-3.5" />
+                      Leave a Review
+                    </Button>
+                  )}
                 </div>
               )}
             </CardContent>
           </Card>
         ))}
       </div>
+
+      {reviewDialogBookingId && (
+        <LeaveReviewDialog
+          open={!!reviewDialogBookingId}
+          onOpenChange={(open) => !open && setReviewDialogBookingId(null)}
+          shopId={data!.bookings.find((b) => b.id === reviewDialogBookingId)!.shopId}
+          bookingId={reviewDialogBookingId}
+        />
+      )}
     </div>
   )
 }

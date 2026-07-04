@@ -1,9 +1,12 @@
-import { Users, Clock, X } from "lucide-react"
+import { Users, Clock, X, Star } from "lucide-react"
+import { useState } from "react"
 import { useQueueStore } from "@/store/queueStore"
 import { useQueuePositionStream, useCancelQueueEntry, useMyWalkInHistory } from "@/hooks/useWalkInQueue"
+import { useMyReviewedIds } from "@/hooks/useReviews"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import LeaveReviewDialog from "@/components/shared/LeaveReviewDialog"
 import { toast } from "sonner"
 
 function formatWait(minutes: number | null) {
@@ -21,6 +24,8 @@ export default function QueuePage() {
   const { snapshot, error } = useQueuePositionStream(activeEntry?.shopId, activeEntry?.entryId)
   const cancelMutation = useCancelQueueEntry(activeEntry?.shopId)
   const { data: historyPage, isLoading: historyLoading } = useMyWalkInHistory()
+  const { data: reviewedIds } = useMyReviewedIds()
+  const [reviewDialogEntryId, setReviewDialogEntryId] = useState<string | null>(null)
 
   const isFinished =
     snapshot &&
@@ -113,20 +118,44 @@ export default function QueuePage() {
         <div className="space-y-2.5">
           {historyPage?.content.map((entry) => (
             <Card key={entry.id}>
-              <CardContent className="flex items-center justify-between p-3.5">
-                <div>
-                  <p className="font-medium">
-                    {entry.services.map((s) => s.serviceName).join(", ")}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {new Date(entry.joinedAt).toLocaleDateString()} · {entry.status}
-                  </p>
+              <CardContent className="p-3.5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">
+                      {entry.services.map((s) => s.serviceName).join(", ")}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(entry.joinedAt).toLocaleDateString()} · {entry.status}
+                    </p>
+                  </div>
                 </div>
+                {entry.status === "COMPLETED" &&
+                  reviewedIds &&
+                  !reviewedIds.walkInQueueEntryIds.includes(entry.id) && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-2 w-full gap-1.5"
+                      onClick={() => setReviewDialogEntryId(entry.id)}
+                    >
+                      <Star className="h-3.5 w-3.5" />
+                      Leave a Review
+                    </Button>
+                  )}
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
+
+      {reviewDialogEntryId && (
+        <LeaveReviewDialog
+          open={!!reviewDialogEntryId}
+          onOpenChange={(open) => !open && setReviewDialogEntryId(null)}
+          shopId={historyPage!.content.find((e) => e.id === reviewDialogEntryId)!.shopId}
+          walkInQueueEntryId={reviewDialogEntryId}
+        />
+      )}
     </div>
   )
 }

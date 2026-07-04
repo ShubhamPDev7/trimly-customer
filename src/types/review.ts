@@ -23,3 +23,15 @@ export interface ShopRatingSummaryResponse {
   averageRating: number
   totalReviews: number
 }
+
+export interface ReviewRequest {
+  rating: number
+  comment?: string
+  bookingId?: string
+  walkInQueueEntryId?: string
+}
+
+export interface MyReviewedIdsResponse {
+  bookingIds: string[]
+  walkInQueueEntryIds: string[]
+}
