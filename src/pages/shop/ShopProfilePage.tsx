@@ -184,10 +184,18 @@ export default function ShopProfilePage() {
         </Tabs>
       </div>
 
-      {/* Sticky book button */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-background/95 p-4 backdrop-blur-md safe-bottom">
+      {/* Sticky action buttons */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-background/95 p-4 backdrop-blur-md safe-bottom flex gap-2">
         <Button
-          className="w-full"
+          variant="outline"
+          className="flex-1"
+          size="lg"
+          onClick={() => navigate(`/shop/${shopId}/queue-join`)}
+        >
+          Join Queue
+        </Button>
+        <Button
+          className="flex-1"
           size="lg"
           onClick={() => navigate(`/shop/${shopId}/book`)}
         >

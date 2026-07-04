@@ -44,3 +44,18 @@ export interface PagedBookingsResponse {
   totalPages: number
   last: boolean
 }
+
+export type PaymentMode = "CASH" | "ONLINE" | "UPI" | "RAZORPAY"
+export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "REFUNDED"
+
+export interface BillResponse {
+  id: string
+  shopId: string
+  bookingId: string
+  totalAmount: number
+  paymentMode: PaymentMode
+  paymentStatus: PaymentStatus
+  createdAt: string
+  razorpayOrderId: string | null
+  razorpayPaymentId: string | null
+}
