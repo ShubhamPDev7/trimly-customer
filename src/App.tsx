@@ -10,6 +10,7 @@ import MyBookingsPage from "@/pages/bookings/MyBookingsPage"
 import QueuePage from "@/pages/queue/QueuePage"
 import JoinQueuePage from "@/pages/queue/JoinQueuePage"
 import ProfilePage from "@/pages/profile/ProfilePage"
+import LoyaltyPage from "@/pages/loyalty/LoyaltyPage"
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/bookings" element={<MyBookingsPage />} />
             <Route path="/queue" element={<QueuePage />} />
-            <Route path="/loyalty" element={<div className="p-4">Loyalty placeholder</div>} />
+            <Route path="/loyalty" element={<LoyaltyPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
           <Route path="/shop/:shopId" element={<ShopProfilePage />} />
